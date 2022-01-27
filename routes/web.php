@@ -21,3 +21,7 @@ Route::get('/', function () {
 Route::get('/products', [ProductsController::class, 'index']);
 Route::get('/products/{product}', [ProductsController::class, 'show']);
 Route::post('/products', [ProductsController::class, 'store']);
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
