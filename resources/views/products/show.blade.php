@@ -19,6 +19,13 @@
                     </div>
                 </div>
 
+                <div>
+                    @forelse ($product->reviews as $review)
+                        <p>{{ $review->body }}</p>
+                    @empty
+                        <p>Be the first to leave a review.</p>
+                    @endforelse
+                </div>
             </div>
         </div>
     </section>

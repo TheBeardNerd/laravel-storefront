@@ -15,4 +15,14 @@ class Product extends Model
     {
         return "/products/{$this->id}";
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
+    }
+
+    public function addReview($attributes)
+    {
+        return $this->reviews()->create($attributes);
+    }
 }
