@@ -19,7 +19,7 @@
                     </div>
                 </div>
 
-                <div>
+                <div class="mb-12">
                     <h3 class="mb-1 text-sm tracking-widest text-gray-500 uppercase title-font">Reviews</h3>
                     <hr class="mb-3">
                     @forelse ($product->reviews as $review)
@@ -50,6 +50,32 @@
                         </form>
                     @empty
                         <p>Be the first to leave a review.</p>
+                    @endforelse
+                </div>
+
+                <div>
+                    <h3 class="mb-1 text-sm tracking-widest text-gray-500 uppercase title-font">Questions</h3>
+                    <hr class="mb-3">
+                    @forelse ($product->questions as $question)
+                        <form method="POST" action="{{ $question->path() }}">
+                            @method('PATCH')
+                            @csrf
+
+                            @if(!$loop->first)
+                                <hr class="my-4">
+                            @endif
+
+                            <div class="flex items-baseline justify-between">
+                                <div class="mr-4">
+                                    <h4 class="text-xl font-medium text-gray-700 title-font">{{ $question->question }}</h4>
+                                    <p>By {{ $question->author }}</p>
+                                </div>
+
+                                <input name="approved" type="checkbox" onchange="this.form.submit()" {{ $question->approved ? 'checked' : '' }}>
+                            </div>
+                        </form>
+                    @empty
+                        <p>Be the first to ask a question.</p>
                     @endforelse
                 </div>
             </div>
