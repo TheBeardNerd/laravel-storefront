@@ -34,7 +34,9 @@ class ManageProductsTest extends TestCase
 
         $attributes = Product::factory()->raw();
 
-        $this->post('/products', $attributes)->assertRedirect('/products');
+        $response = $this->post('/products', $attributes);
+
+        $response->assertRedirect(Product::where($attributes)->first()->path());
 
         $this->assertDatabaseHas('products', $attributes);
 

@@ -21,12 +21,32 @@ class ProductReviewsTest extends TestCase
 
         $product = Product::factory()->create();
 
-        $attributes = ProductReview::factory()->raw();
+        $attributes = ProductReview::factory([ 'product_id' => $product->id ])->raw();
 
         $this->post($product->path() . '/reviews', $attributes);
 
         $this->assertDatabaseHas('product_reviews', $attributes);
 
         $this->get($product->path())->assertSee($attributes['body']);
+    }
+
+    /** @test */
+    public function a_product_can_be_approved()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->signIn();
+
+        $product = Product::factory()->create();
+
+        $review = $product->addReview(ProductReview::factory()->raw());
+
+        $this->patch($review->path(), [
+            'approved' => true
+        ]);
+
+        $this->assertDatabaseHas('product_reviews', [
+            'approved' => true
+        ]);
     }
 }

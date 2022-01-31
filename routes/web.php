@@ -30,4 +30,5 @@ Route::group(['middleware' => 'auth:sanctum', 'verified'], function() {
     Route::get('/products/{product}', [ProductsController::class, 'show'])->name('product.show');
 
     Route::post('/products/{product}/reviews', [ProductReviewsController::class, 'store'])->name('review.store');
+    Route::patch('/products/{product}/reviews/{review}', [ProductReviewsController::class, 'update'])->name('review.update');
 });

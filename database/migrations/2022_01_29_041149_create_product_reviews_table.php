@@ -22,6 +22,7 @@ class CreateProductReviewsTable extends Migration
             $table->text('body')->nullable();
             $table->boolean('recommended')->nullable();
             $table->integer('helpful')->nullable();
+            $table->boolean('approved')->default(false);
             $table->timestamps();
         });
     }

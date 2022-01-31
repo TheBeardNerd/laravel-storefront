@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\ProductReview;
+use App\Models\ProductReview as Review;
 use Illuminate\Http\Request;
 
 class ProductReviewsController extends Controller
@@ -36,7 +36,16 @@ class ProductReviewsController extends Controller
      */
     public function store(Request $request, Product $product)
     {
-        $product->addReview($request->all());
+        $validated = $request->validate([
+            'rating' => 'required|between:1,5',
+            'author' => 'required|string',
+            'title' => 'required|string',
+            'body' => 'required|string',
+            'recommended' => 'required|boolean',
+            'helpful' => 'required|integer'
+        ]);
+
+        $product->addReview($validated);
 
         return redirect($product->path());
     }
@@ -44,10 +53,10 @@ class ProductReviewsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ProductReview  $productReview
+     * @param  \App\Models\ProductReview as Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function show(ProductReview $productReview)
+    public function show(Review $review)
     {
         //
     }
@@ -55,10 +64,10 @@ class ProductReviewsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ProductReview  $productReview
+     * @param  \App\Models\ProductReview as Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProductReview $productReview)
+    public function edit(Review $review)
     {
         //
     }
@@ -67,21 +76,26 @@ class ProductReviewsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ProductReview  $productReview
+     * @param  \App\Models\Product  $product
+     * @param  \App\Models\ProductReview as Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProductReview $productReview)
+    public function update(Request $request, Product $product, Review $review)
     {
-        //
+        $review->update([
+            'approved' => $request->has('approved')
+        ]);
+
+        return redirect($product->path());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ProductReview  $productReview
+     * @param  \App\Models\ProductReview as Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProductReview $productReview)
+    public function destroy(Review $review)
     {
         //
     }

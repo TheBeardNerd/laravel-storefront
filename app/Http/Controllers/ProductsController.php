@@ -44,9 +44,9 @@ class ProductsController extends Controller
             'price' => 'required'
         ]);
 
-        Product::create($attributes);
+        $product = Product::create($attributes);
 
-        return redirect('/products');
+        return redirect($product->path());
     }
 
     /**
