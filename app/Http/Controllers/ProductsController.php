@@ -26,7 +26,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -38,6 +38,7 @@ class ProductsController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->validate([
+            'brand' => 'required',
             'name' => 'required',
             'description' => 'required',
             'price' => 'required'

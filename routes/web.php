@@ -18,10 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/products', [ProductsController::class, 'index']);
-Route::get('/products/{product}', [ProductsController::class, 'show']);
-Route::post('/products', [ProductsController::class, 'store']);
+Route::group(['middleware' => 'auth:sanctum', 'verified'], function() {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+    Route::get('/products', [ProductsController::class, 'index'])->name('products.all');
+    Route::post('/products', [ProductsController::class, 'store'])->name('product.store');
+    Route::get('/products/create', [ProductsController::class, 'create'])->name('product.create');
+    Route::get('/products/{product}', [ProductsController::class, 'show'])->name('product.show');
+});
