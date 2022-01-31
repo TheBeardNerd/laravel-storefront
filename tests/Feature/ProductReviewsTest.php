@@ -25,8 +25,6 @@ class ProductReviewsTest extends TestCase
 
         $this->post($product->path() . '/reviews', $attributes);
 
-        $this->assertDatabaseHas('product_reviews', $attributes);
-
         $this->get($product->path())->assertSee($attributes['body']);
     }
 

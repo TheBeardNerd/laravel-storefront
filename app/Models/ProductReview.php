@@ -24,7 +24,7 @@ class ProductReview extends Model
     protected $touches = ['product'];
 
     /**
-     * Get the product that the product review belongs to.
+     * Get the product that the review belongs to.
      */
     public function product()
     {
@@ -32,7 +32,7 @@ class ProductReview extends Model
     }
 
     /**
-     *  The path to the product review.
+     *  The path to the review.
      *
      * @return string
      */

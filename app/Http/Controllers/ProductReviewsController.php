@@ -41,8 +41,6 @@ class ProductReviewsController extends Controller
             'author' => 'required|string',
             'title' => 'required|string',
             'body' => 'required|string',
-            'recommended' => 'required|boolean',
-            'helpful' => 'required|integer'
         ]);
 
         $product->addReview($validated);
