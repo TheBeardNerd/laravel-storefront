@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -26,21 +25,41 @@ class ManageProductsTest extends TestCase
     /** @test */
     public function a_user_can_add_a_product()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
 
         $this->get('/products/create')->assertStatus(200);
 
-        $attributes = Product::factory()->raw();
+        $response = $this->post('/products', $attributes = Product::factory()->raw());
 
-        $response = $this->post('/products', $attributes);
+        $product = Product::where($attributes)->first();
 
-        $response->assertRedirect(Product::where($attributes)->first()->path());
+        $response->assertRedirect($product->path());
+
+        $this->get($product->path())
+            ->assertSee($attributes['brand'])
+            ->assertSee($attributes['name'])
+            ->assertSee($attributes['description'])
+            ->assertSee($attributes['price']);
+    }
+
+    /** @test */
+    public function a_user_can_update_a_product()
+    {
+        $this->signIn();
+
+        $product = Product::factory()->create();
+
+        $this->patch($product->path(), $attributes = [
+                    'brand' => 'New Brand',
+                    'name' => 'New Name',
+                    'description' => 'New Description',
+                    'price' => 25.00
+                ])
+            ->assertRedirect($product->path());
+
+        $this->get($product->path() . '/edit')->assertOk();
 
         $this->assertDatabaseHas('products', $attributes);
-
-        $this->get('/products')->assertSee($attributes['name']);
     }
 
     /** @test */
@@ -86,8 +105,6 @@ class ManageProductsTest extends TestCase
     /** @test */
     public function a_user_can_view_a_single_product()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
 
         $product = Product::factory()->create();

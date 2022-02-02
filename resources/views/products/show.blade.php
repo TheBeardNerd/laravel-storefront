@@ -1,25 +1,33 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2>
-            <a href="{{ route('products.all') }}" class="text-indigo-600 underline hover:text-indigo-500">Products</a> / <span>{{ $product->name }}</span>
-        </h2>
+        <div class="flex items-baseline justify-between">
+            <h2>
+                <a href="{{ route('products.all') }}" class="text-indigo-600 underline hover:text-indigo-500">Products</a> / <span>{{ $product->name }}</span>
+            </h2>
+
+            <a href="{{ route('product.edit', $product) }}" class="px-5 py-2 text-sm text-white no-underline bg-indigo-600 rounded-md">Edit product</a>
+        </div>
     </x-slot>
 
     <section class="overflow-hidden text-gray-600 body-font">
         <div class="container px-5 pt-12 pb-24 mx-auto">
             <div class="mx-auto lg:w-4/5">
-                <div class="flex flex-wrap mb-12">
+                <section class="flex flex-wrap mb-12">
                     <img alt="ecommerce" class="object-cover object-center w-full h-64 rounded lg:w-1/2 lg:h-auto" src="https://dummyimage.com/400x400">
 
                     <div class="w-full mt-6 lg:w-1/2 lg:pl-10 lg:py-6 lg:mt-0">
                         <p class="mb-1 text-sm tracking-widest text-gray-500 uppercase title-font">{{ $product->brand }}</p>
                         <h2 class="mb-2 text-3xl font-medium text-gray-900 title-font">{{ $product->name }}</h2>
+                        <div class="flex items-center mb-6 leading-snug divide-x divide-gray-500">
+                            <a href="#reviews" class="mr-4 text-gray-600 transition-colors hover:text-gray-400">{{ $product->reviews->count() }} Reviews</a>
+                            <a href="#questions" class="pl-4 text-gray-600 transition-colors hover:text-gray-400">{{ $product->questions->count() }} Questions</a>
+                        </div>
                         <p class="mb-4 leading-relaxed">{{ $product->description }}</p>
                         <p class="mb-0 text-2xl font-medium text-gray-900 title-font">${{ $product->price }}</p>
                     </div>
-                </div>
+                </section>
 
-                <div class="mb-12">
+                <section id="reviews" class="mb-12 scroll-mt-12">
                     <h3 class="mb-1 text-sm tracking-widest text-gray-500 uppercase title-font">Reviews</h3>
                     <hr class="mb-3">
                     @forelse ($product->reviews as $review)
@@ -49,11 +57,11 @@
                             </div>
                         </form>
                     @empty
-                        <p>Be the first to leave a review.</p>
+                        <p>There are no reviews.</p>
                     @endforelse
-                </div>
+                </section>
 
-                <div>
+                <section id="questions" class="scroll-mt-12">
                     <h3 class="mb-1 text-sm tracking-widest text-gray-500 uppercase title-font">Questions</h3>
                     <hr class="mb-3">
                     @forelse ($product->questions as $question)
@@ -73,11 +81,18 @@
 
                                 <input name="approved" type="checkbox" onchange="this.form.submit()" {{ $question->approved ? 'checked' : '' }}>
                             </div>
+
+                            <div class="pl-6 mt-4 border-l-2 border-indigo-600">
+                                @foreach ($question->answers as $answer)
+                                    <p>{{ $answer->body }}</p>
+                                    <small>{{ $answer->author }} — {{ $answer->created_at->diffForHumans() }}</small>
+                                @endforeach
+                            </div>
                         </form>
                     @empty
-                        <p>Be the first to ask a question.</p>
+                        <p>There are no questions.</p>
                     @endforelse
-                </div>
+                </section>
             </div>
         </div>
     </section>

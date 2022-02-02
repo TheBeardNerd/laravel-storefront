@@ -14,7 +14,7 @@ class ProductQuestion extends Model
      *
      * @var array
      */
-    protected $fillable = ['product_id', 'question', 'author', 'helpful', 'approved'];
+    protected $fillable = ['product_id', 'question', 'author', 'approved'];
 
     /**
      * All of the relationships to be touched.
@@ -24,7 +24,7 @@ class ProductQuestion extends Model
     protected $touches = ['product'];
 
     /**
-     * Get the product that the review belongs to.
+     * Get the product that the question belongs to.
      */
     public function product()
     {
@@ -32,12 +32,33 @@ class ProductQuestion extends Model
     }
 
     /**
-     *  The path to the review.
+     * The answers associated with the question.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function answers()
+    {
+        return $this->hasMany(ProductQuestionAnswer::class);
+    }
+
+    /**
+     *  The path to the question.
      *
      * @return string
      */
     public function path()
     {
         return "/products/{$this->product->id}/questions/{$this->id}";
+    }
+
+    /**
+     * Add an answer to the question.
+     *
+     * @param array $attributes
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function addAnswer($attributes)
+    {
+        return $this->answers()->create($attributes);
     }
 }

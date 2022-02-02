@@ -32,16 +32,11 @@ class ProductQuestionsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request, Product $product)
+    public function store(Product $product)
     {
-        $validated = $request->validate([
-            'question' => 'required|string',
-            'author' => 'required|string',
-        ]);
-
-        $product->addQuestion($validated);
+        $product->addQuestion($this->validateRequest());
 
         return redirect($product->path());
     }
@@ -74,7 +69,7 @@ class ProductQuestionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Product  $product
      * @param  \App\Models\ProductQuestion as Question  $question
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Product $product, Question $question)
     {
@@ -94,5 +89,16 @@ class ProductQuestionsController extends Controller
     public function destroy(Question $question)
     {
         //
+    }
+
+    /**
+     * @return array
+     */
+    protected function validateRequest()
+    {
+        return request()->validate([
+            'question' => 'required|string',
+            'author' => 'required|string',
+        ]);
     }
 }

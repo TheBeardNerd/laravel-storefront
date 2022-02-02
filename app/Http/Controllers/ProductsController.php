@@ -32,19 +32,11 @@ class ProductsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store()
     {
-        $attributes = $request->validate([
-            'brand' => 'required',
-            'name' => 'required',
-            'description' => 'required',
-            'price' => 'required'
-        ]);
-
-        $product = Product::create($attributes);
+        $product = Product::create($this->validateRequest());
 
         return redirect($product->path());
     }
@@ -68,19 +60,20 @@ class ProductsController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.edit', compact('product'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Product $product)
+    public function update(Product $product)
     {
-        //
+        $product->update($this->validateRequest());
+
+        return redirect($product->path());
     }
 
     /**
@@ -91,6 +84,18 @@ class ProductsController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $this->delete($product);
+    }
+
+    /**
+     * @return array
+     */
+    protected function validateRequest() {
+        return request()->validate([
+            'brand' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required'
+        ]);
     }
 }

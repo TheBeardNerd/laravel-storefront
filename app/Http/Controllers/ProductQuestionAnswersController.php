@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\ProductReview as Review;
+use App\Models\ProductQuestion as Question;
+use App\Models\ProductQuestionAnswer as Answer;
 use Illuminate\Http\Request;
 
-class ProductReviewsController extends Controller
+class ProductQuestionAnswersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -32,11 +33,13 @@ class ProductReviewsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Product  $product
+     * @param  \App\Models\ProductQuestion as Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function store(Product $product)
+    public function store(Request $request, Product $product, Question $question)
     {
-        $product->addReview($this->validateRequest());
+        $question->addAnswer($this->validateRequest());
 
         return redirect($product->path());
     }
@@ -44,10 +47,10 @@ class ProductReviewsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ProductReview as Review  $review
+     * @param  \App\Models\ProductQuestionAnswer as Answer $answer
      * @return \Illuminate\Http\Response
      */
-    public function show(Review $review)
+    public function show(Answer $answer)
     {
         //
     }
@@ -55,10 +58,10 @@ class ProductReviewsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ProductReview as Review  $review
+     * @param  \App\Models\ProductQuestionAnswer as Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Review $review)
+    public function edit(Answer $answer)
     {
         //
     }
@@ -67,26 +70,21 @@ class ProductReviewsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @param  \App\Models\ProductReview as Review  $review
+     * @param  \App\Models\ProductQuestionAnswer as Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product, Review $review)
+    public function update(Request $request, Answer $answer)
     {
-        $review->update([
-            'approved' => $request->has('approved')
-        ]);
-
-        return redirect($product->path());
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ProductReview as Review  $review
+     * @param  \App\Models\ProductQuestionAnswer as Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Review $review)
+    public function destroy(Answer $answer)
     {
         //
     }
@@ -97,10 +95,8 @@ class ProductReviewsController extends Controller
     protected function validateRequest()
     {
         return request()->validate([
-            'rating' => 'required|between:1,5',
-            'author' => 'required|string',
-            'title' => 'required|string',
             'body' => 'required|string',
+            'author' => 'required|string',
         ]);
     }
 }

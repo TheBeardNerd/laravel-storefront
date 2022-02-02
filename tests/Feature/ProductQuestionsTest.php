@@ -15,24 +15,20 @@ class ProductQuestionsTest extends TestCase
     /** @test */
     public function a_product_can_have_questions()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
 
         $product = Product::factory()->create();
 
-        $attributes = ProductQuestion::factory([ 'product_id' => $product->id ])->raw();
+        $question = $product->addQuestion(ProductQuestion::factory()->raw());
 
-        $this->post($product->path() . '/questions', $attributes);
+        $this->post($product->path() . '/questions', $question->toArray());
 
-        $this->get($product->path())->assertSee($attributes['question']);
+        $this->get($product->path())->assertSee($question->question);
     }
 
     /** @test */
-    public function a_product_can_be_approved()
+    public function a_question_can_be_approved()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
 
         $product = Product::factory()->create();
@@ -46,5 +42,33 @@ class ProductQuestionsTest extends TestCase
         $this->assertDatabaseHas('product_questions', [
             'approved' => true
         ]);
+    }
+
+    /** @test */
+    public function a_question_requires_a_body()
+    {
+        $this->signIn();
+
+        $product = Product::factory()->create();
+
+        $question = $product->addQuestion(
+            ProductQuestion::factory()->raw(['question' => ''])
+        );
+
+        $this->post($product->path() . '/questions', $question->toArray())->assertSessionHasErrors('question');
+    }
+
+    /** @test */
+    public function a_question_requires_an_author()
+    {
+        $this->signIn();
+
+        $product = Product::factory()->create();
+
+        $question = $product->addQuestion(
+            ProductQuestion::factory()->raw(['author' => ''])
+        );
+
+        $this->post($product->path() . '/questions', $question->toArray())->assertSessionHasErrors('author');
     }
 }

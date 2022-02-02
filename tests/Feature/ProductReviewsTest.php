@@ -15,24 +15,20 @@ class ProductReviewsTest extends TestCase
     /** @test */
     public function a_product_can_have_reviews()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
 
         $product = Product::factory()->create();
 
-        $attributes = ProductReview::factory([ 'product_id' => $product->id ])->raw();
+        $review = $product->addReview(ProductReview::factory()->raw());
 
-        $this->post($product->path() . '/reviews', $attributes);
+        $this->post($product->path() . '/reviews', $review->toArray());
 
-        $this->get($product->path())->assertSee($attributes['body']);
+        $this->get($product->path())->assertSee($review->body);
     }
 
     /** @test */
-    public function a_product_can_be_approved()
+    public function a_review_can_be_approved()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
 
         $product = Product::factory()->create();
@@ -46,5 +42,61 @@ class ProductReviewsTest extends TestCase
         $this->assertDatabaseHas('product_reviews', [
             'approved' => true
         ]);
+    }
+
+    /** @test */
+    public function a_review_requires_a_title()
+    {
+        $this->signIn();
+
+        $product = Product::factory()->create();
+
+        $review = $product->addReview(
+            ProductReview::factory()->raw(['title' => ''])
+        );
+
+        $this->post($product->path() . '/reviews', $review->toArray())->assertSessionHasErrors('title');
+    }
+
+    /** @test */
+    public function a_review_requires_a_body()
+    {
+        $this->signIn();
+
+        $product = Product::factory()->create();
+
+        $review = $product->addReview(
+            ProductReview::factory()->raw(['body' => ''])
+        );
+
+        $this->post($product->path() . '/reviews', $review->toArray())->assertSessionHasErrors('body');
+    }
+
+    /** @test */
+    public function a_review_requires_an_author()
+    {
+        $this->signIn();
+
+        $product = Product::factory()->create();
+
+        $review = $product->addReview(
+            ProductReview::factory()->raw(['author' => ''])
+        );
+
+        $this->post($product->path() . '/reviews', $review->toArray())->assertSessionHasErrors('author');
+    }
+
+    /** @test */
+    public function a_review_requires_a_rating()
+    {
+        $this->signIn();
+
+        $product = Product::factory()->create();
+
+        $review = $product->addReview(
+            ProductReview::factory()->raw(['rating' => null])
+        );
+
+        $this->post($product->path() . '/reviews', $review->toArray())->assertSessionHasErrors('rating');
     }
 }
