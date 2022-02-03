@@ -67,4 +67,26 @@ class Product extends Model
     {
         return $this->questions()->create($attributes);
     }
+
+    /**
+     * Record activity for a product.
+     *
+     * @param  string $type
+     */
+    public function recordActivity($type)
+    {
+        $this->activity()->create([
+            'description' => $type
+        ]);
+    }
+
+    /**
+     * The activity feed for the product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function activity()
+    {
+        return $this->hasMany(Activity::class);
+    }
 }
