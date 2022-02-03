@@ -45,6 +45,28 @@ class ProductReviewsTest extends TestCase
     }
 
     /** @test */
+    public function a_review_can_be_disapproved()
+    {
+        $this->signIn();
+
+        $product = Product::factory()->create();
+
+        $review = $product->addReview(ProductReview::factory()->raw());
+
+        $this->patch($review->path(), [
+            'approved' => true
+        ]);
+
+        $this->patch($review->path(), [
+            'approved' => false
+        ]);
+
+        $this->assertDatabaseHas('product_reviews', [
+            'approved' => false
+        ]);
+    }
+
+    /** @test */
     public function a_review_requires_a_title()
     {
         $this->signIn();

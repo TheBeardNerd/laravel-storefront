@@ -73,9 +73,7 @@ class ProductReviewsController extends Controller
      */
     public function update(Request $request, Product $product, Review $review)
     {
-        $review->update([
-            'approved' => $request->has('approved')
-        ]);
+        $request->approved ? $review->approve() : $review->disapprove();
 
         return redirect($product->path());
     }

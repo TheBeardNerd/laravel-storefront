@@ -18,6 +18,7 @@ class ProductQuestionFactory extends Factory
             'product_id' => Product::factory(),
             'question' => $this->faker->sentence(),
             'author' => $this->faker->name(),
+            'approved' => false
         ];
     }
 }

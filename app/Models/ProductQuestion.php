@@ -24,6 +24,15 @@ class ProductQuestion extends Model
     protected $touches = ['product'];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'approved' => 'boolean',
+    ];
+
+    /**
      * Get the product that the question belongs to.
      */
     public function product()
@@ -49,6 +58,20 @@ class ProductQuestion extends Model
     public function path()
     {
         return "/products/{$this->product->id}/questions/{$this->id}";
+    }
+
+    /**
+     * Mark the question as approved.
+     */
+    public function approve() {
+        $this->update(['approved' => true]);
+    }
+
+    /**
+     * Mark the question as disapproved.
+     */
+    public function disapprove() {
+        $this->update(['approved' => false]);
     }
 
     /**

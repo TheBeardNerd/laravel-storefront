@@ -15,11 +15,13 @@ class CreateProductQuestionAnswersTable extends Migration
     {
         Schema::create('product_question_answers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('product_question_id');
+            $table->unsignedBigInteger('product_question_id');
             $table->text('body');
             $table->string('author');
             $table->integer('helpful')->default(0);
             $table->timestamps();
+
+            $table->foreign('product_question_id')->references('id')->on('product_questions')->onDelete('cascade');
         });
     }
 

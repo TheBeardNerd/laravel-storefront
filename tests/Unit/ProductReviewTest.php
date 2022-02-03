@@ -26,4 +26,28 @@ class ProductReviewTest extends TestCase
 
         $this->assertEquals('/products/' . $review->product->id . '/reviews/' . $review->id, $review->path());
     }
+
+    /** @test */
+    public function it_can_be_approved()
+    {
+        $review = ProductReview::factory()->create();
+
+        $this->assertFalse($review->approved);
+
+        $review->approve();
+
+        $this->assertTrue($review->fresh()->approved);
+    }
+
+    /** @test */
+    public function it_can_be_disapproved()
+    {
+        $review = ProductReview::factory(['approved' => true])->create();
+
+        $this->assertTrue($review->approved);
+
+        $review->disapprove();
+
+        $this->assertFalse($review->fresh()->approved);
+    }
 }

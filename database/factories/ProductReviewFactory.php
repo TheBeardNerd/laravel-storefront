@@ -20,7 +20,9 @@ class ProductReviewFactory extends Factory
             'author' => $this->faker->name(),
             'title' => $this->faker->words(5, true),
             'body' => $this->faker->text(),
+            'recommended' => false,
             'helpful' => $this->faker->numberBetween(1, 20),
+            'approved' => false
         ];
     }
 }

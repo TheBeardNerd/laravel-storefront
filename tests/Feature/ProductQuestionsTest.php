@@ -45,6 +45,30 @@ class ProductQuestionsTest extends TestCase
     }
 
     /** @test */
+    public function a_question_can_be_disapproved()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->signIn();
+
+        $product = Product::factory()->create();
+
+        $question = $product->addQuestion(ProductQuestion::factory()->raw());
+
+        $this->patch($question->path(), [
+            'approved' => true
+        ]);
+
+        $this->patch($question->path(), [
+            'approved' => false
+        ]);
+
+        $this->assertDatabaseHas('product_questions', [
+            'approved' => false
+        ]);
+    }
+
+    /** @test */
     public function a_question_requires_a_body()
     {
         $this->signIn();

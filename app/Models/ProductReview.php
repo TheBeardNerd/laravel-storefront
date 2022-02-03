@@ -24,6 +24,15 @@ class ProductReview extends Model
     protected $touches = ['product'];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'approved' => 'boolean',
+    ];
+
+    /**
      * Get the product that the review belongs to.
      */
     public function product()
@@ -39,5 +48,19 @@ class ProductReview extends Model
     public function path()
     {
         return "/products/{$this->product->id}/reviews/{$this->id}";
+    }
+
+    /**
+     * Mark the review as approved.
+     */
+    public function approve() {
+        $this->update(['approved' => true]);
+    }
+
+    /**
+     * Mark the review as disapproved.
+     */
+    public function disapprove() {
+        $this->update(['approved' => false]);
     }
 }

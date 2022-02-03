@@ -15,11 +15,13 @@ class CreateProductQuestionsTable extends Migration
     {
         Schema::create('product_questions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('product_id')->nullable();
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->string('question');
             $table->string('author');
             $table->boolean('approved')->default(false);
             $table->timestamps();
+
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

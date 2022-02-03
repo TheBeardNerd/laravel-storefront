@@ -15,7 +15,7 @@ class CreateProductReviewsTable extends Migration
     {
         Schema::create('product_reviews', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('product_id')->nullable();
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->integer('rating')->nullable();
             $table->string('author')->nullable();
             $table->string('title')->nullable();
@@ -24,6 +24,8 @@ class CreateProductReviewsTable extends Migration
             $table->integer('helpful')->default(0);
             $table->boolean('approved')->default(false);
             $table->timestamps();
+
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

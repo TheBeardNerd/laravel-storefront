@@ -26,4 +26,28 @@ class ProductQuestionTest extends TestCase
 
         $this->assertEquals('/products/' . $question->product->id . '/questions/' . $question->id, $question->path());
     }
+
+    /** @test */
+    public function it_can_be_approved()
+    {
+        $question = ProductQuestion::factory()->create();
+
+        $this->assertFalse($question->approved);
+
+        $question->approve();
+
+        $this->assertTrue($question->fresh()->approved);
+    }
+
+    /** @test */
+    public function it_can_be_disapproved()
+    {
+        $question = ProductQuestion::factory(['approved' => true])->create();
+
+        $this->assertTrue($question->approved);
+
+        $question->disapprove();
+
+        $this->assertFalse($question->fresh()->approved);
+    }
 }

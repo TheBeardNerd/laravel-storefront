@@ -73,9 +73,7 @@ class ProductQuestionsController extends Controller
      */
     public function update(Request $request, Product $product, Question $question)
     {
-        $question->update([
-            'approved' => $request->has('approved')
-        ]);
+        $request->approved ? $question->approve() : $question->disapprove();
 
         return redirect($product->path());
     }
