@@ -1,13 +1,32 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Product;
 
+use App\Traits\RecordsActivity;
+use Database\Factories\Product\ProductQuestionFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductQuestion extends Model
+class Question extends Model
 {
-    use HasFactory;
+    use HasFactory, RecordsActivity;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'product_questions';
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return ProductQuestionFactory::new();
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -47,7 +66,7 @@ class ProductQuestion extends Model
      */
     public function answers()
     {
-        return $this->hasMany(ProductQuestionAnswer::class);
+        return $this->hasMany(Answer::class);
     }
 
     /**

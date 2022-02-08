@@ -12,18 +12,24 @@
     <section class="overflow-hidden text-gray-600 body-font">
         <div class="container px-5 pt-12 pb-24 mx-auto">
             <div class="mx-auto lg:w-4/5">
-                <section class="flex flex-wrap mb-12">
-                    <img alt="ecommerce" class="object-cover object-center w-full h-64 rounded lg:w-1/2 lg:h-auto" src="https://dummyimage.com/400x400">
+                <section>
+                    @if ($product->activity->count())
+                        @include('products.activity.card')
+                    @endif
 
-                    <div class="w-full mt-6 lg:w-1/2 lg:pl-10 lg:py-6 lg:mt-0">
-                        <p class="mb-1 text-sm tracking-widest text-gray-500 uppercase title-font">{{ $product->brand }}</p>
-                        <h2 class="mb-2 text-3xl font-medium text-gray-900 title-font">{{ $product->name }}</h2>
-                        <div class="flex items-center mb-6 leading-snug divide-x divide-gray-500">
-                            <a href="#reviews" class="mr-4 text-gray-600 transition-colors hover:text-gray-400">{{ $product->reviews->count() }} Reviews</a>
-                            <a href="#questions" class="pl-4 text-gray-600 transition-colors hover:text-gray-400">{{ $product->questions->count() }} Questions</a>
+                    <div class="flex flex-wrap mb-12">
+                        <img alt="ecommerce" class="object-cover object-center w-full h-64 rounded lg:w-1/2 lg:h-auto" src="https://dummyimage.com/400x400">
+
+                        <div class="w-full mt-6 lg:w-1/2 lg:pl-10 lg:py-6 lg:mt-0">
+                            <p class="mb-1 text-sm tracking-widest text-gray-500 uppercase title-font">{{ $product->brand }}</p>
+                            <h2 class="mb-2 text-3xl font-medium text-gray-900 title-font">{{ $product->name }}</h2>
+                            <div class="flex items-center mb-6 leading-snug divide-x divide-gray-500">
+                                <a href="#reviews" class="mr-4 text-gray-600 transition-colors hover:text-gray-400">{{ $product->reviews->count() }} Reviews</a>
+                                <a href="#questions" class="pl-4 text-gray-600 transition-colors hover:text-gray-400">{{ $product->questions->count() }} Questions</a>
+                            </div>
+                            <p class="mb-4 leading-relaxed">{{ $product->description }}</p>
+                            <p class="mb-0 text-2xl font-medium text-gray-900 title-font">${{ $product->price }}</p>
                         </div>
-                        <p class="mb-4 leading-relaxed">{{ $product->description }}</p>
-                        <p class="mb-0 text-2xl font-medium text-gray-900 title-font">${{ $product->price }}</p>
                     </div>
                 </section>
 

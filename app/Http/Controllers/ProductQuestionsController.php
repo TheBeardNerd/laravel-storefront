@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\ProductQuestion as Question;
+use App\Models\Product\Product;
+use App\Models\Product\Question;
 use Illuminate\Http\Request;
 
 class ProductQuestionsController extends Controller
@@ -44,7 +44,7 @@ class ProductQuestionsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ProductQuestion as Question  $question
+     * @param  \App\Models\Product\Question  $question
      * @return \Illuminate\Http\Response
      */
     public function show(Question $question)
@@ -55,7 +55,7 @@ class ProductQuestionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ProductQuestion as Question  $question
+     * @param  \App\Models\Product\Question  $question
      * @return \Illuminate\Http\Response
      */
     public function edit(Question $question)
@@ -68,7 +68,7 @@ class ProductQuestionsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Product  $product
-     * @param  \App\Models\ProductQuestion as Question  $question
+     * @param  \App\Models\Product\Question  $question
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Product $product, Question $question)
@@ -81,7 +81,7 @@ class ProductQuestionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ProductQuestion as Question  $question
+     * @param  \App\Models\Product\Question  $question
      * @return \Illuminate\Http\Response
      */
     public function destroy(Question $question)

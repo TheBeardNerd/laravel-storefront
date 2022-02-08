@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Product;
-use App\Models\ProductQuestion;
+use App\Models\Product\Product;
+use App\Models\Product\Question;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -19,7 +19,7 @@ class ProductQuestionsTest extends TestCase
 
         $product = Product::factory()->create();
 
-        $question = $product->addQuestion(ProductQuestion::factory()->raw());
+        $question = $product->addQuestion(Question::factory()->raw());
 
         $this->post($product->path() . '/questions', $question->toArray());
 
@@ -33,7 +33,7 @@ class ProductQuestionsTest extends TestCase
 
         $product = Product::factory()->create();
 
-        $question = $product->addQuestion(ProductQuestion::factory()->raw());
+        $question = $product->addQuestion(Question::factory()->raw());
 
         $this->patch($question->path(), [
             'approved' => true
@@ -53,7 +53,7 @@ class ProductQuestionsTest extends TestCase
 
         $product = Product::factory()->create();
 
-        $question = $product->addQuestion(ProductQuestion::factory()->raw());
+        $question = $product->addQuestion(Question::factory()->raw());
 
         $this->patch($question->path(), [
             'approved' => true
@@ -76,7 +76,7 @@ class ProductQuestionsTest extends TestCase
         $product = Product::factory()->create();
 
         $question = $product->addQuestion(
-            ProductQuestion::factory()->raw(['question' => ''])
+            Question::factory()->raw(['question' => ''])
         );
 
         $this->post($product->path() . '/questions', $question->toArray())->assertSessionHasErrors('question');
@@ -90,7 +90,7 @@ class ProductQuestionsTest extends TestCase
         $product = Product::factory()->create();
 
         $question = $product->addQuestion(
-            ProductQuestion::factory()->raw(['author' => ''])
+            Question::factory()->raw(['author' => ''])
         );
 
         $this->post($product->path() . '/questions', $question->toArray())->assertSessionHasErrors('author');

@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Models\Product;
-use App\Models\ProductQuestion;
+use App\Models\Product\Product;
+use App\Models\Product\Question;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,7 +14,7 @@ class ProductQuestionTest extends TestCase
     /** @test */
     public function it_belongs_to_a_product()
     {
-        $question = ProductQuestion::factory()->create();
+        $question = Question::factory()->create();
 
         $this->assertInstanceOf(Product::class, $question->product);
     }
@@ -22,7 +22,7 @@ class ProductQuestionTest extends TestCase
     /** @test */
     public function it_has_a_path()
     {
-        $question = ProductQuestion::factory()->create();
+        $question = Question::factory()->create();
 
         $this->assertEquals('/products/' . $question->product->id . '/questions/' . $question->id, $question->path());
     }
@@ -30,7 +30,7 @@ class ProductQuestionTest extends TestCase
     /** @test */
     public function it_can_be_approved()
     {
-        $question = ProductQuestion::factory()->create();
+        $question = Question::factory()->create();
 
         $this->assertFalse($question->approved);
 
@@ -42,7 +42,7 @@ class ProductQuestionTest extends TestCase
     /** @test */
     public function it_can_be_disapproved()
     {
-        $question = ProductQuestion::factory(['approved' => true])->create();
+        $question = Question::factory(['approved' => true])->create();
 
         $this->assertTrue($question->approved);
 

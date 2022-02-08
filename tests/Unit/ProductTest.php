@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Models\Product;
-use App\Models\ProductReview;
+use App\Models\Product\Product;
+use App\Models\Product\Review;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -25,7 +25,7 @@ class ProductTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $attributes = ProductReview::factory()->raw();
+        $attributes = Review::factory()->raw();
 
         $review = $product->addReview($attributes);
 

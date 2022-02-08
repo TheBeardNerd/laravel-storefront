@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProductQuestionAnswersController;
+use App\Http\Controllers\ProductAnswersController;
 use App\Http\Controllers\ProductQuestionsController;
 use App\Http\Controllers\ProductReviewsController;
 use App\Http\Controllers\ProductsController;
@@ -39,6 +39,6 @@ Route::group(['middleware' => 'auth:sanctum', 'verified'], function() {
     Route::post('/products/{product}/questions', [ProductQuestionsController::class, 'store'])->name('question.store');
     Route::patch('/products/{product}/questions/{question}', [ProductQuestionsController::class, 'update'])->name('question.update');
 
-    Route::post('/products/{product}/questions/{question}/answers', [ProductQuestionAnswersController::class, 'store'])->name('question.store');
-    Route::patch('/products/{product}/questions/{question}/answers/{answer}', [ProductQuestionAnswersController::class, 'update'])->name('question.update');
+    Route::post('/products/{product}/questions/{question}/answers', [ProductAnswersController::class, 'store'])->name('question.store');
+    Route::patch('/products/{product}/questions/{question}/answers/{answer}', [ProductAnswersController::class, 'update'])->name('question.update');
 });

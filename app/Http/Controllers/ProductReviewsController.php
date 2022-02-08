@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\ProductReview as Review;
+use App\Models\Product\Product;
+use App\Models\Product\Review;
 use Illuminate\Http\Request;
 
 class ProductReviewsController extends Controller
@@ -44,7 +44,7 @@ class ProductReviewsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ProductReview as Review  $review
+     * @param  \App\Models\Product\Review  $review
      * @return \Illuminate\Http\Response
      */
     public function show(Review $review)
@@ -55,7 +55,7 @@ class ProductReviewsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ProductReview as Review  $review
+     * @param  \App\Models\Product\Review  $review
      * @return \Illuminate\Http\Response
      */
     public function edit(Review $review)
@@ -68,7 +68,7 @@ class ProductReviewsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Product  $product
-     * @param  \App\Models\ProductReview as Review  $review
+     * @param  \App\Models\Product\Review  $review
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product, Review $review)
@@ -81,7 +81,7 @@ class ProductReviewsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ProductReview as Review  $review
+     * @param  \App\Models\Product\Review  $review
      * @return \Illuminate\Http\Response
      */
     public function destroy(Review $review)

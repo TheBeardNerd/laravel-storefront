@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\ProductQuestion as Question;
-use App\Models\ProductQuestionAnswer as Answer;
+use App\Models\Product\Product;
+use App\Models\Product\Question;
+use App\Models\Product\Answer;
 use Illuminate\Http\Request;
 
-class ProductQuestionAnswersController extends Controller
+class ProductAnswersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class ProductQuestionAnswersController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Product  $product
-     * @param  \App\Models\ProductQuestion as Question  $question
+     * @param  \App\Models\Product\Question  $question
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, Product $product, Question $question)
@@ -47,7 +47,7 @@ class ProductQuestionAnswersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ProductQuestionAnswer as Answer $answer
+     * @param  \App\Models\ProductAnswer $answer
      * @return \Illuminate\Http\Response
      */
     public function show(Answer $answer)
@@ -58,7 +58,7 @@ class ProductQuestionAnswersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ProductQuestionAnswer as Answer  $answer
+     * @param  \App\Models\ProductAnswer  $answer
      * @return \Illuminate\Http\Response
      */
     public function edit(Answer $answer)
@@ -70,7 +70,7 @@ class ProductQuestionAnswersController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ProductQuestionAnswer as Answer  $answer
+     * @param  \App\Models\ProductAnswer  $answer
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Answer $answer)
@@ -81,7 +81,7 @@ class ProductQuestionAnswersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ProductQuestionAnswer as Answer  $answer
+     * @param  \App\Models\ProductAnswer  $answer
      * @return \Illuminate\Http\Response
      */
     public function destroy(Answer $answer)

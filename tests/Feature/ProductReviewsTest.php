@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Product;
-use App\Models\ProductReview;
+use App\Models\Product\Product;
+use App\Models\Product\Review;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -19,7 +19,7 @@ class ProductReviewsTest extends TestCase
 
         $product = Product::factory()->create();
 
-        $review = $product->addReview(ProductReview::factory()->raw());
+        $review = $product->addReview(Review::factory()->raw());
 
         $this->post($product->path() . '/reviews', $review->toArray());
 
@@ -33,7 +33,7 @@ class ProductReviewsTest extends TestCase
 
         $product = Product::factory()->create();
 
-        $review = $product->addReview(ProductReview::factory()->raw());
+        $review = $product->addReview(Review::factory()->raw());
 
         $this->patch($review->path(), [
             'approved' => true
@@ -51,7 +51,7 @@ class ProductReviewsTest extends TestCase
 
         $product = Product::factory()->create();
 
-        $review = $product->addReview(ProductReview::factory()->raw());
+        $review = $product->addReview(Review::factory()->raw());
 
         $this->patch($review->path(), [
             'approved' => true
@@ -74,7 +74,7 @@ class ProductReviewsTest extends TestCase
         $product = Product::factory()->create();
 
         $review = $product->addReview(
-            ProductReview::factory()->raw(['title' => ''])
+            Review::factory()->raw(['title' => ''])
         );
 
         $this->post($product->path() . '/reviews', $review->toArray())->assertSessionHasErrors('title');
@@ -88,7 +88,7 @@ class ProductReviewsTest extends TestCase
         $product = Product::factory()->create();
 
         $review = $product->addReview(
-            ProductReview::factory()->raw(['body' => ''])
+            Review::factory()->raw(['body' => ''])
         );
 
         $this->post($product->path() . '/reviews', $review->toArray())->assertSessionHasErrors('body');
@@ -102,7 +102,7 @@ class ProductReviewsTest extends TestCase
         $product = Product::factory()->create();
 
         $review = $product->addReview(
-            ProductReview::factory()->raw(['author' => ''])
+            Review::factory()->raw(['author' => ''])
         );
 
         $this->post($product->path() . '/reviews', $review->toArray())->assertSessionHasErrors('author');
@@ -116,7 +116,7 @@ class ProductReviewsTest extends TestCase
         $product = Product::factory()->create();
 
         $review = $product->addReview(
-            ProductReview::factory()->raw(['rating' => null])
+            Review::factory()->raw(['rating' => null])
         );
 
         $this->post($product->path() . '/reviews', $review->toArray())->assertSessionHasErrors('rating');

@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Models\Product;
-use App\Models\ProductReview;
+use App\Models\Product\Product;
+use App\Models\Product\Review;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,7 +14,7 @@ class ProductReviewTest extends TestCase
     /** @test */
     public function it_belongs_to_a_product()
     {
-        $review = ProductReview::factory()->create();
+        $review = Review::factory()->create();
 
         $this->assertInstanceOf(Product::class, $review->product);
     }
@@ -22,7 +22,7 @@ class ProductReviewTest extends TestCase
     /** @test */
     public function it_has_a_path()
     {
-        $review = ProductReview::factory()->create();
+        $review = Review::factory()->create();
 
         $this->assertEquals('/products/' . $review->product->id . '/reviews/' . $review->id, $review->path());
     }
@@ -30,7 +30,7 @@ class ProductReviewTest extends TestCase
     /** @test */
     public function it_can_be_approved()
     {
-        $review = ProductReview::factory()->create();
+        $review = Review::factory()->create();
 
         $this->assertFalse($review->approved);
 
@@ -42,7 +42,7 @@ class ProductReviewTest extends TestCase
     /** @test */
     public function it_can_be_disapproved()
     {
-        $review = ProductReview::factory(['approved' => true])->create();
+        $review = Review::factory(['approved' => true])->create();
 
         $this->assertTrue($review->approved);
 

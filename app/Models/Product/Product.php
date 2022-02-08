@@ -1,13 +1,33 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Product;
 
+use App\Models\Activity;
+use App\Traits\RecordsActivity;
+use Database\Factories\Product\ProductFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, RecordsActivity;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'products';
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return ProductFactory::new();
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -33,7 +53,7 @@ class Product extends Model
      */
     public function reviews()
     {
-        return $this->hasMany(ProductReview::class);
+        return $this->hasMany(Review::class);
     }
 
     /**
@@ -43,7 +63,7 @@ class Product extends Model
      */
     public function questions()
     {
-        return $this->hasMany(ProductQuestion::class);
+        return $this->hasMany(Question::class);
     }
 
     /**
@@ -69,24 +89,12 @@ class Product extends Model
     }
 
     /**
-     * Record activity for a product.
-     *
-     * @param  string $type
-     */
-    public function recordActivity($type)
-    {
-        $this->activity()->create([
-            'description' => $type
-        ]);
-    }
-
-    /**
      * The activity feed for the product.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function activity()
     {
-        return $this->hasMany(Activity::class);
+        return $this->hasMany(Activity::class)->latest();
     }
 }

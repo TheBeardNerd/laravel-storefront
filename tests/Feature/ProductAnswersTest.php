@@ -2,27 +2,29 @@
 
 namespace Tests\Feature;
 
-use App\Models\Product;
-use App\Models\ProductQuestion;
-use App\Models\ProductQuestionAnswer;
+use App\Models\Product\Product;
+use App\Models\Product\Question;
+use App\Models\Product\Answer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ProductQuestionAnswersTest extends TestCase
+class ProductAnswersTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
     /** @test */
     public function a_product_question_can_have_answers()
     {
+        $this->withoutExceptionHandling();
+
         $this->signIn();
 
         $product = Product::factory()->create();
 
-        $question = $product->addQuestion(ProductQuestion::factory()->raw());
+        $question = $product->addQuestion(Question::factory()->raw());
 
-        $answer = $question->addAnswer(ProductQuestionAnswer::factory()->raw());
+        $answer = $question->addAnswer(Answer::factory()->raw());
 
         $this->post($question->path() . '/answers', $answer->toArray());
 
@@ -36,9 +38,9 @@ class ProductQuestionAnswersTest extends TestCase
 
         $product = Product::factory()->create();
 
-        $question = $product->addQuestion(ProductQuestion::factory()->raw());
+        $question = $product->addQuestion(Question::factory()->raw());
 
-        $answer = $question->addAnswer(ProductQuestionAnswer::factory()->raw(['body' => '']));
+        $answer = $question->addAnswer(Answer::factory()->raw(['body' => '']));
 
         $this->post($question->path() . '/answers', $answer->toArray())->assertSessionHasErrors('body');
     }
@@ -50,9 +52,9 @@ class ProductQuestionAnswersTest extends TestCase
 
         $product = Product::factory()->create();
 
-        $question = $product->addQuestion(ProductQuestion::factory()->raw());
+        $question = $product->addQuestion(Question::factory()->raw());
 
-        $answer = $question->addAnswer(ProductQuestionAnswer::factory()->raw(['author' => '']));
+        $answer = $question->addAnswer(Answer::factory()->raw(['author' => '']));
 
         $this->post($question->path() . '/answers', $answer->toArray())->assertSessionHasErrors('author');
     }
