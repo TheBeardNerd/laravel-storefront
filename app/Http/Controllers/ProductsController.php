@@ -36,7 +36,7 @@ class ProductsController extends Controller
      */
     public function store()
     {
-        $product = Product::create($this->validateRequest());
+        $product = auth()->user()->products()->create($this->validateRequest());
 
         return redirect($product->path());
     }
@@ -84,7 +84,11 @@ class ProductsController extends Controller
      */
     public function destroy(Product $product)
     {
-        $this->delete($product);
+        $this->authorize('manage', $product);
+
+        $product->delete();
+
+        return redirect(route('products.index'));
     }
 
     /**
@@ -92,10 +96,10 @@ class ProductsController extends Controller
      */
     protected function validateRequest() {
         return request()->validate([
-            'brand' => 'required',
-            'name' => 'required',
-            'description' => 'required',
-            'price' => 'required'
+            'brand' => 'sometimes|required',
+            'name' => 'sometimes|required',
+            'description' => 'sometimes|required',
+            'price' => 'sometimes|required'
         ]);
     }
 }

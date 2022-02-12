@@ -1,1 +1,1 @@
-You created the product
+{{ $activity->user->name }} created the product

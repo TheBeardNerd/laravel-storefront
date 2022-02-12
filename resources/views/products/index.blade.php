@@ -5,7 +5,7 @@
                 {{ __('Products') }}
             </h2>
 
-            <a href="{{ route('product.create') }}" class="px-5 py-2 text-sm text-white no-underline bg-indigo-600 rounded-md">Add a product</a>
+            <a href="{{ route('products.create') }}" class="px-5 py-2 text-sm text-white no-underline bg-indigo-600 rounded-md">Add a product</a>
         </div>
     </x-slot>
 
@@ -22,7 +22,7 @@
                             <h2 class="text-lg font-medium title-font">
                                 <a href="{{ $product->path() }}" class="text-gray-900 no-underline transition-colors hover:text-gray-600">{{ $product->name }}</a>
                             </h2>
-                            <p class="mt-1">{{ $product->price }}</p>
+                            <p class="mt-1">${{ $product->price }}</p>
                         </div>
                     </div>
                 @empty

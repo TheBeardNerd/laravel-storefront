@@ -26,12 +26,7 @@ Route::group(['middleware' => 'auth:sanctum', 'verified'], function() {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/products', [ProductsController::class, 'index'])->name('products.all');
-    Route::post('/products', [ProductsController::class, 'store'])->name('product.store');
-    Route::get('/products/create', [ProductsController::class, 'create'])->name('product.create');
-    Route::get('/products/{product}', [ProductsController::class, 'show'])->name('product.show');
-    Route::get('/products/{product}/edit', [ProductsController::class, 'edit'])->name('product.edit');
-    Route::patch('/products/{product}', [ProductsController::class, 'update'])->name('product.update');
+    Route::resource('products', ProductsController::class);
 
     Route::post('/products/{product}/reviews', [ProductReviewsController::class, 'store'])->name('review.store');
     Route::patch('/products/{product}/reviews/{review}', [ProductReviewsController::class, 'update'])->name('review.update');

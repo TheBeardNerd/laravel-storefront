@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <form method="POST" action="{{ route('product.store') }}" class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
+            <form method="POST" action="{{ route('products.store') }}" class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
                 @csrf
 
                 <div class="p-6 bg-white border-b border-gray-200 sm:px-20">

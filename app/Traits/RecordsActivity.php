@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Activity;
+use Illuminate\Support\Arr;
 
 trait RecordsActivity
 {
@@ -77,6 +78,7 @@ trait RecordsActivity
     public function recordActivity($type)
     {
         $this->activity()->create([
+            'user_id' => ($this->product ?? $this)->creator->id,
             'description' => $type,
             'changes' =>  $this->activityChanges(),
             'product_id' => class_basename($this) === 'Product' ? $this->id : $this->product_id
@@ -92,8 +94,12 @@ trait RecordsActivity
     {
         if ($this->wasChanged()) {
             return [
-                    'before' => array_diff($this->oldAttributes, $this->getAttributes()),
-                    'after' => $this->getChanges()
+                    'before' => Arr::except(
+                        array_diff($this->oldAttributes, $this->getAttributes()), 'updated_at'
+                    ),
+                    'after' => Arr::except(
+                        $this->getChanges(), 'updated_at'
+                    )
             ];
         }
     }

@@ -3,6 +3,7 @@
 namespace Database\Factories\Product;
 
 use App\Models\Product\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
@@ -22,6 +23,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
+            'creator_id' => User::factory(),
             'brand' => $this->faker->company(),
             'name' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(),

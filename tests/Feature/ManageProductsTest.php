@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Product\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -12,12 +13,13 @@ class ManageProductsTest extends TestCase
     use WithFaker, RefreshDatabase;
 
     /** @test */
-    public function only_authenticated_users_can_manage_products()
+    public function guests_cannot_manage_products()
     {
         $product = Product::factory()->create();
 
         $this->get('/products')->assertRedirect('login');
         $this->get('/products/create')->assertRedirect('login');
+        $this->get($product->path() . '/edit')->assertRedirect('login');
         $this->get($product->path())->assertRedirect('login');
         $this->post('/products', $product->toArray())->assertRedirect('login');
     }
@@ -29,13 +31,8 @@ class ManageProductsTest extends TestCase
 
         $this->get('/products/create')->assertStatus(200);
 
-        $response = $this->post('/products', $attributes = Product::factory()->raw());
-
-        $product = Product::where($attributes)->first();
-
-        $response->assertRedirect($product->path());
-
-        $this->get($product->path())
+        $this->followingRedirects()
+            ->post('/products', $attributes = Product::factory()->raw())
             ->assertSee($attributes['brand'])
             ->assertSee($attributes['name'])
             ->assertSee($attributes['description'])
@@ -63,6 +60,33 @@ class ManageProductsTest extends TestCase
     }
 
     /** @test */
+    public function a_user_can_delete_a_product()
+    {
+        $product = Product::factory()->create();
+
+        $this->signIn(User::factory(['email' => env('ADMIN_EMAIL')])->create());
+
+        $this->delete($product->path())
+            ->assertRedirect('/products');
+
+        $this->assertDatabaseMissing('products', $product->only('id'));
+    }
+
+    /** @test */
+    public function unauthorized_users_cannot_delete_products()
+    {
+        $product = Product::factory()->create();
+
+        $this->delete($product->path())
+            ->assertRedirect('/login');
+
+        $this->signIn();
+
+        $this->delete($product->path())
+            ->assertStatus(403);
+    }
+
+    /** @test */
     public function a_product_requires_a_name()
     {
         $this->signIn();
@@ -77,7 +101,7 @@ class ManageProductsTest extends TestCase
     {
         $this->signIn();
 
-        $attributes = Product::factory()->raw(['brand' => null]);
+        $attributes = Product::factory()->raw(['brand' => '']);
 
         $this->post('/products', $attributes)->assertSessionHasErrors('brand');
     }

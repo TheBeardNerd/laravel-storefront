@@ -3,6 +3,7 @@
 namespace App\Models\Product;
 
 use App\Models\Activity;
+use App\Models\User;
 use App\Traits\RecordsActivity;
 use Database\Factories\Product\ProductFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -34,7 +35,14 @@ class Product extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'brand', 'description', 'price'];
+    protected $fillable = ['creator_id', 'name', 'brand', 'description', 'price'];
+
+    /**
+     * Model events that should trigger new activity.
+     *
+     * @var array
+     */
+    protected static $recordableEvents = ['created', 'updated'];
 
     /**
      *  The path to the product.
@@ -47,6 +55,26 @@ class Product extends Model
     }
 
     /**
+     * The creator of the product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * The activity feed for the product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function activity()
+    {
+        return $this->hasMany(Activity::class)->latest();
+    }
+
+    /**
      * The reviews associated with the product.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -54,16 +82,6 @@ class Product extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
-    }
-
-    /**
-     * The questions associated with the product.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function questions()
-    {
-        return $this->hasMany(Question::class);
     }
 
     /**
@@ -78,6 +96,16 @@ class Product extends Model
     }
 
     /**
+     * The questions associated with the product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
+
+    /**
      * Add a question to the product.
      *
      * @param array $attributes
@@ -86,15 +114,5 @@ class Product extends Model
     public function addQuestion($attributes)
     {
         return $this->questions()->create($attributes);
-    }
-
-    /**
-     * The activity feed for the product.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function activity()
-    {
-        return $this->hasMany(Activity::class)->latest();
     }
 }

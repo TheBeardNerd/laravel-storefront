@@ -31,6 +31,7 @@ class RecordActivityTest extends TestCase
     public function updating_a_product()
     {
         $product = Product::factory()->create();
+
         $originalName = $product->name;
 
         $product->update(['name' => 'Changed']);

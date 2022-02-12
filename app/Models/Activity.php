@@ -9,7 +9,7 @@ class Activity extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_id', 'description', 'changes'];
+    protected $fillable = ['user_id', 'product_id', 'description', 'changes'];
 
     protected $casts = [
         'changes' => 'array'
@@ -18,5 +18,10 @@ class Activity extends Model
     public function subject()
     {
         return $this->morphTo();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

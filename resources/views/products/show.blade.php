@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div class="flex items-baseline justify-between">
             <h2>
-                <a href="{{ route('products.all') }}" class="text-indigo-600 underline hover:text-indigo-500">Products</a> / <span>{{ $product->name }}</span>
+                <a href="{{ route('products.index') }}" class="text-indigo-600 underline hover:text-indigo-500">Products</a> / <span>{{ $product->name }}</span>
             </h2>
 
-            <a href="{{ route('product.edit', $product) }}" class="px-5 py-2 text-sm text-white no-underline bg-indigo-600 rounded-md">Edit product</a>
+            <a href="{{ route('products.edit', $product) }}" class="px-5 py-2 text-sm text-white no-underline bg-indigo-600 rounded-md">Edit product</a>
         </div>
     </x-slot>
 
@@ -67,7 +67,7 @@
                     @endforelse
                 </section>
 
-                <section id="questions" class="scroll-mt-12">
+                <section id="questions" class="mb-12 scroll-mt-12">
                     <h3 class="mb-1 text-sm tracking-widest text-gray-500 uppercase title-font">Questions</h3>
                     <hr class="mb-3">
                     @forelse ($product->questions as $question)
@@ -99,6 +99,17 @@
                         <p>There are no questions.</p>
                     @endforelse
                 </section>
+
+                @can('manage', $product)
+                    <section>
+                        <form method="POST" action="{{ $product->path() }}" class="mt-2">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit" class="py-2 px-6 bg-red-600 hover:bg-red-500 rounded text-xs text-white transition-colors">Delete</button>
+                        </form>
+                    </section>
+                @endcan
             </div>
         </div>
     </section>
